@@ -2,30 +2,53 @@ import userModel from "../model/user.model.js";
 import { validationResult } from "express-validator";
 import createUser from "../services/user.service.js";
 
+export const userRegister = async function (req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
+  const { fullname, email, password } = req.body;
 
+  const hashPassword = await userModel.hashPassword(password);
 
-export const userRegister = async function(req,res,next) {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
- 
-    }
+  const user = await createUser({
+    firstname: fullname.firstname,
+    lastname: fullname.lastname,
+    email,
+    password: hashPassword,
+  });
 
+  const token = user.genAuthToken();
 
-    const {fullname, email, password} = req.body;
+  res.status(201).json({ token, user });
+};
 
-    const hashPassword =  await userModel.hashPassword(password);
+export const userLogin = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(401).json({ error: errors.array() });
+  }
 
+  const { email, password } = req.body;
 
-    const user = await createUser({
-        firstname : fullname.firstname,
-        lastname : fullname.lastname,
-        email,
-        password : hashPassword
-    })
+  const user = await userModel.findOne({ email }).select("+password");
 
-    const token = user.genAuthToken();
+  if (!user) {
+    return res.status(400).json({ message: "Invalid Email Or Password" });
+  }
 
-    res.status(201).json({token, user})
-}
+  const isMatch = await user.comparePassword(password);
+
+  if (!isMatch) {
+    return res.status(400).json({ message: "Invalid Email Or Password" });
+  }
+
+  const token = user.genAuthToken();
+
+  res.status(200).json({ token, user });
+};
+
+export const userProfile = async (req, res, next) => {
+  res.status(200).json(req.user);
+};

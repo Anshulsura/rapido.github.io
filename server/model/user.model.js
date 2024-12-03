@@ -20,16 +20,17 @@ const userSchema = new mongoose.Schema({
     minlength: [5, "email must be at least 5 charactars long"],
   },
 
-  password: {
-    type: String,
-    required: true,
-    select: false,
-  },
+    password: {
+      type: String,
+      required: true,
+      select: false,
+    },
 });
 
 userSchema.methods.genAuthToken = function() {
   const token = jwt.sign({ _id: this._id }, process.env.JWT_SCECRET);
   return token;
+  
 };
 
 userSchema.methods.comparePassword = async function(password) {
