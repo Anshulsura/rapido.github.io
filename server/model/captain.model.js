@@ -26,13 +26,24 @@ const captainSchema = new mongoose.Schema({
     select: false,
   },
 
+  status: {
+    type: String,
+    default: "inactive",
+    enum: ["active", "inactive"],
+  },
+
   vehicle: {
     color: {
       type: String,
-      enum: ["white", "black", "blue"],
+      minlength: [3, "at least must be 3"],
       required: true,
     },
-    vehicleType: {
+    plate: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    vehicletype: {
       type: String,
       enum: ["car", "auto", "bike"],
       required: true,
