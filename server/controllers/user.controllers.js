@@ -21,6 +21,12 @@ export const userRegister = async function (req, res, next) {
 
   const token = user.genAuthToken();
 
+  res.cookie("token", token, {
+    httpOnly: true, // Prevents client-side scripts from accessing the cookie
+    maxAge: 24 * 60 * 60*1000, // 24 hours in milliseconds
+  });
+
+
   res.status(201).json({ token, user });
 };
 

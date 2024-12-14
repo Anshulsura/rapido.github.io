@@ -5,6 +5,8 @@ import Captainform from "./pages/Captainform";
 import Passengerform from "./pages/Passengerform";
 import Passengerlogin from "./pages/Passengerlogin";
 import Forgotpassword from "./pages/Forgotpassword";
+import Dashboard from "./pages/Dashboard";
+import Userprotected from "./pages/Userprotected";
 const App = () => {
   const navMenu = [
     {
@@ -31,6 +33,10 @@ const App = () => {
     {
       path: "/forgotpassword",
       element: <Forgotpassword />,
+    },
+    {
+      path: "/dashboard",
+      element:  <Userprotected><Dashboard /></Userprotected>,
     },
   ];
 

@@ -6,6 +6,7 @@ import router from "./router/user.router.js";
 import captainRouter from "./router/captain.router.js";
 import dbConnect from "./db/connect.js";
 import cookieParser from "cookie-parser";
+import cors from 'cors'
 dbConnect();
 const port = process.env.PORT;
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
+
+app.use(cors())
 
 app.use("/users", router);
 
