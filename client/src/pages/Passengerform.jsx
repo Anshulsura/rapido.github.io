@@ -1,4 +1,4 @@
-import { useEffect, createContext } from "react";
+import { useEffect, createContext,  useState, useContext  } from "react";
 import { gsap } from "gsap";
 import { FaApple } from "react-icons/fa";
 import { MdOutlineFacebook } from "react-icons/md";
@@ -6,7 +6,6 @@ import { SiIndeed } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Usercontext from "../hooks/Usercontext";
 
